@@ -27,7 +27,7 @@ export class MusicComponent implements AfterViewInit, OnInit {
   tracks = signal<Track[]>([]);
   skeletonItems = Array(3).fill(0);
   
-  playerState = new Map<number, { isPlaying: boolean; progress: number; isLooping: boolean }>();
+  playerState = signal(new Map<number, { isPlaying: boolean; progress: number; isLooping: boolean }>());
   activePlayer: HTMLAudioElement | null = null;
   
   showDescription = signal<number | null>(null);
@@ -40,9 +40,11 @@ export class MusicComponent implements AfterViewInit, OnInit {
         { id: 3, title: 'Rainy Window', artist: 'Nature\'s Echo', duration: '3:44', genre: 'Nature Sounds', description: 'The calming sound of rain gently falling, perfect for relaxation or as a natural white noise.', audioUrl: 'https://cdn.pixabay.com/download/audio/2024/02/09/audio_a27c1a85a8.mp3', videoUrl: 'https://test-videos.co.uk/vids/sintel/mp4/h264/360/Sintel_360_10s_1MB.mp4', posterUrl: 'assets/images/poster3.jpg' }
       ]);
       
+      const initialState = new Map<number, { isPlaying: boolean; progress: number; isLooping: boolean }>();
       this.tracks().forEach(track => {
-        this.playerState.set(track.id, { isPlaying: false, progress: 0, isLooping: false });
+        initialState.set(track.id, { isPlaying: false, progress: 0, isLooping: false });
       });
+      this.playerState.set(initialState);
 
       this.loading.set(false);
     }, 1500);
@@ -77,13 +79,21 @@ export class MusicComponent implements AfterViewInit, OnInit {
   }
 
   toggleLoop(trackId: number) {
-    const state = this.playerState.get(trackId);
-    if (state) {
-        state.isLooping = !state.isLooping;
-        this.playerState.set(trackId, { ...state });
-        const audio = this.audioPlayers.find(p => parseInt(p.nativeElement.dataset['trackId'] || '0', 10) === trackId)?.nativeElement;
-        if(audio) audio.loop = state.isLooping;
-    }
+    const audio = this.audioPlayers.find(p => parseInt(p.nativeElement.dataset['trackId'] || '0', 10) === trackId)?.nativeElement;
+
+    this.playerState.update(currentMap => {
+        const state = currentMap.get(trackId);
+        if (state) {
+            const newMap = new Map(currentMap);
+            const newState = { ...state, isLooping: !state.isLooping };
+            newMap.set(trackId, newState);
+            
+            if(audio) audio.loop = newState.isLooping;
+
+            return newMap;
+        }
+        return currentMap;
+    });
   }
 
   seek(event: MouseEvent, trackId: number) {
@@ -110,31 +120,51 @@ export class MusicComponent implements AfterViewInit, OnInit {
   }
 
   private updateProgress(trackId: number, audio: HTMLAudioElement) {
-    const state = this.playerState.get(trackId);
-    if (state && !isNaN(audio.duration)) {
-      const progress = (audio.currentTime / audio.duration) * 100;
-      this.playerState.set(trackId, { ...state, progress });
-    }
+    this.playerState.update(currentMap => {
+        const state = currentMap.get(trackId);
+        if (state && !isNaN(audio.duration)) {
+            const progress = (audio.currentTime / audio.duration) * 100;
+            const newMap = new Map(currentMap);
+            newMap.set(trackId, { ...state, progress });
+            return newMap;
+        }
+        return currentMap;
+    });
   }
 
   private handlePlay(trackId: number, audio: HTMLAudioElement) {
-    const state = this.playerState.get(trackId);
-    if(state) {
-      this.playerState.set(trackId, { ...state, isPlaying: true });
-    }
+    this.playerState.update(currentMap => {
+        const state = currentMap.get(trackId);
+        if (state) {
+            const newMap = new Map(currentMap);
+            newMap.set(trackId, { ...state, isPlaying: true });
+            return newMap;
+        }
+        return currentMap;
+    });
   }
   
   private handlePause(trackId: number, audio: HTMLAudioElement) {
-    const state = this.playerState.get(trackId);
-    if(state) {
-      this.playerState.set(trackId, { ...state, isPlaying: false });
-    }
+    this.playerState.update(currentMap => {
+        const state = currentMap.get(trackId);
+        if (state) {
+            const newMap = new Map(currentMap);
+            newMap.set(trackId, { ...state, isPlaying: false });
+            return newMap;
+        }
+        return currentMap;
+    });
   }
 
   private handleTrackEnd(trackId: number, audio: HTMLAudioElement) {
-    const state = this.playerState.get(trackId);
-    if (state && !state.isLooping) {
-      this.playerState.set(trackId, { ...state, isPlaying: false, progress: 0 });
-    }
+    this.playerState.update(currentMap => {
+        const state = currentMap.get(trackId);
+        if (state && !state.isLooping) {
+            const newMap = new Map(currentMap);
+            newMap.set(trackId, { ...state, isPlaying: false, progress: 0 });
+            return newMap;
+        }
+        return currentMap;
+    });
   }
 }

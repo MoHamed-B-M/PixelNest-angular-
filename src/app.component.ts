@@ -13,6 +13,7 @@ import { ThemeService } from './services/theme.service';
     main.HomePage > *,
     main.PhotographyPage > *,
     main.MusicPage > *,
+    main.AboutPage > *,
     main.FeedbackPage > * {
       animation: route-enter 0.5s cubic-bezier(0.2, 0, 0, 1) forwards;
     }

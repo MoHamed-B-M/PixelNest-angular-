@@ -1,0 +1,47 @@
+<!-- HERO -->
+<div class="text-center py-16 px-4">
+  <h1 class="text-4xl sm:text-6xl font-extrabold font-manrope mb-2" [style.color]="'var(--md-sys-color-on-background)'">Let's Connect</h1>
+  <p class="max-w-2xl mx-auto text-lg" [style.color]="'var(--md-sys-color-on-surface-variant)'">Creator, Developer, and Digital Explorer.</p>
+</div>
+
+<!-- PROFILE & LINKS -->
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+  
+  <!-- Profile Intro -->
+  <div class="flex flex-col sm:flex-row items-center text-center sm:text-left gap-8 mb-16 p-8 rounded-[40px]" [style.background-color]="'var(--md-sys-color-surface-container)'">
+    <img src="https://picsum.photos/seed/nature-photographer/150/150" alt="Profile Picture of Mohamed" class="w-32 h-32 rounded-full shadow-lg flex-shrink-0">
+    <div>
+      <h2 class="text-2xl font-bold font-manrope" [style.color]="'var(--md-sys-color-on-surface)'">A Bit About Me</h2>
+      <p class="mt-2" [style.color]="'var(--md-sys-color-on-surface-variant)'">
+        Hello! I'm Mohamed, a 20-year-old student in my second year of Web Development and Multimedia at ISET Sidi Bouzid. As a budding photographer, I love capturing the serene beauty of nature. This creative suite is a reflection of my journey in both technology and art, and I'm passionate about crafting beautiful, functional digital experiences.
+      </p>
+    </div>
+  </div>
+
+  <!-- Social Links Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    @for (link of socialLinks; track link.name) {
+      <a [href]="link.url" target="_blank" rel="noopener noreferrer" class="social-card group rounded-[32px] p-6 flex flex-col items-center text-center">
+        <div class="text-5xl mb-4 transition-transform duration-300 group-hover:scale-110" [style.color]="link.color">
+          <i [class]="link.icon"></i>
+        </div>
+        <h3 class="text-xl font-bold font-manrope mb-2" [style.color]="'var(--md-sys-color-on-surface)'">{{ link.name }}</h3>
+        <p class="text-sm flex-grow" [style.color]="'var(--md-sys-color-on-surface-variant)'">{{ link.description }}</p>
+        <span class="mt-4 text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity" [style.color]="'var(--md-sys-color-primary)'">Visit Profile &rarr;</span>
+      </a>
+    }
+  </div>
+</div>
+
+<style>
+.social-card {
+  background-color: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+}
+.social-card:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.15);
+  border-color: var(--md-sys-color-primary);
+}
+</style>

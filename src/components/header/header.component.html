@@ -15,6 +15,7 @@
                 <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">Home</a>
                 <a routerLink="/photography" routerLinkActive="active" class="nav-link">Photography</a>
                 <a routerLink="/music" routerLinkActive="active" class="nav-link">Music</a>
+                <a routerLink="/about" routerLinkActive="active" class="nav-link">About Me</a>
                 <a routerLink="/feedback" routerLinkActive="active" class="nav-link">Feedback</a>
             </nav>
             
@@ -51,6 +52,7 @@
                 <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMobileMenu()" class="mobile-nav-link">Home</a>
                 <a routerLink="/photography" routerLinkActive="active" (click)="closeMobileMenu()" class="mobile-nav-link">Photography</a>
                 <a routerLink="/music" routerLinkActive="active" (click)="closeMobileMenu()" class="mobile-nav-link">Music</a>
+                <a routerLink="/about" routerLinkActive="active" (click)="closeMobileMenu()" class="mobile-nav-link">About Me</a>
                 <a routerLink="/feedback" routerLinkActive="active" (click)="closeMobileMenu()" class="mobile-nav-link">Feedback</a>
                  <button (click)="themeService.toggleTheme()" class="m3-toggle-button flex mt-8">
                     @if (themeService.isDark()) {

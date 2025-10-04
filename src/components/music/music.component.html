@@ -11,7 +11,7 @@
     @for (track of tracks(); track track.id) {
       <div class="m3-card group rounded-[30px] ">
           <div class="overflow-hidden rounded-[32px] relative">
-              <video #videoPlayer [poster]="track.posterUrl" class="w-full h-56 object-cover" muted playsinline [loop]="playerState.get(track.id)?.isLooping">
+              <video #videoPlayer [poster]="track.posterUrl" class="w-full h-56 object-cover" muted playsinline [loop]="playerState().get(track.id)?.isLooping">
                   <source [src]="track.videoUrl" type="video/mp4">
               </video>
           </div>
@@ -39,14 +39,15 @@
                   <audio #audioPlayer [attr.data-track-id]="track.id" [src]="track.audioUrl" preload="metadata"></audio>
                   <div class="flex items-center gap-4">
                       <button (click)="togglePlay(track.id, videoPlayer)" class="w-12 h-12 rounded-full text-xl grid place-items-center flex-shrink-0 transition-transform hover:scale-110" [style.background-color]="'var(--md-sys-color-primary)'" [style.color]="'var(--md-sys-color-on-primary)'">
-                          <i class="fas" [class.fa-play]="!playerState.get(track.id)?.isPlaying" [class.fa-pause]="playerState.get(track.id)?.isPlaying"></i>
+                          <i class="fas" [class.fa-play]="!playerState().get(track.id)?.isPlaying" [class.fa-pause]="playerState().get(track.id)?.isPlaying"></i>
                       </button>
                       <div class="progress-container" (click)="seek($event, track.id)">
-                          <div class="progress-bar-filled" [style.width.%]="playerState.get(track.id)?.progress"></div>
+                        <div class="progress-bar-wavy"></div>
+                        <div class="progress-bar-filled" [style.width]="(playerState().get(track.id)?.progress || 0) + '%'"></div>
                       </div>
                   </div>
                   <div class="flex justify-end items-center gap-2 mt-3">
-                      <button class="m3-button-tonal rounded-[20px] " (click)="toggleLoop(track.id)" [class.active]="playerState.get(track.id)?.isLooping">
+                      <button class="m3-button-tonal rounded-[20px] " (click)="toggleLoop(track.id)" [class.active]="playerState().get(track.id)?.isLooping">
                           <i class="fas fa-retweet mr-2 rounded-[20px] "></i> Loop
                       </button>
                       <a [href]="track.audioUrl" download class="m3-button-filled-small rounded-[20px] ">
@@ -150,18 +151,21 @@
 
 .progress-container {
   @apply w-full h-4 rounded-full cursor-pointer relative overflow-hidden;
-  background-color: var(--md-sys-color-surface-variant);
-  transition:0.5s ease;
 }
+
+.progress-bar-wavy {
+    @apply absolute w-full h-full top-0 left-0;
+    background-color: var(--md-sys-color-surface-variant);
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 10"><path d="M0 5 C 5 0, 5 10, 10 5 S 15 0, 20 5 V 10 H 0 Z" fill="black"/></svg>');
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 10"><path d="M0 5 C 5 0, 5 10, 10 5 S 15 0, 20 5 V 10 H 0 Z" fill="black"/></svg>');
+    -webkit-mask-size: 20px 16px;
+    mask-size: 20px 16px;
+    -webkit-mask-repeat: repeat-x;
+}
+
 .progress-bar-filled {
-  @apply absolute h-full;
-  background-color: var(--md-sys-color-primary);
-  -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 10"><path d="M0 5 C 5 0, 5 10, 10 5 S 15 0, 20 5 V 10 H 0 Z" fill="black"/></svg>');
-  mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 10"><path d="M0 5 C 5 0, 5 10, 10 5 S 15 0, 20 5 V 10 H 0 Z" fill="black"/></svg>');
-  -webkit-mask-size: 20px 16px;
-  mask-size: 20px 16px;
-  -webkit-mask-repeat: repeat-x;
-  mask-repeat: repeat-x;
-  transition:0.5s ease;
+    @apply h-full absolute top-0 left-0;
+    background-color: var(--md-sys-color-primary);
+    transition: width 0.1s linear;
 }
 </style>

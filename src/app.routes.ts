@@ -17,6 +17,12 @@ export const APP_ROUTES: Routes = [
     data: { animation: 'MusicPage' } 
   },
   { 
+    path: 'about', 
+    loadComponent: () => import('./components/about/about.component').then(c => c.AboutComponent), 
+    title: 'Creative Suite - About Me', 
+    data: { animation: 'AboutPage' } 
+  },
+  { 
     path: 'feedback', 
     loadComponent: () => import('./components/feedback/feedback.component').then(c => c.FeedbackComponent), 
     title: 'Creative Suite - Feedback', 
