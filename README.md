@@ -3,7 +3,8 @@
 A beautiful and expressive creative suite combining a photography portfolio (PixelNest) and a royalty-free music library (Auralis). Built with the latest Angular features and dynamically themed with Material 3, this project serves as a showcase of modern, elegant web application development.
 
 
-*(Note: Replace this with a screenshot or GIF of your application!)*
+<img width="1345" height="694" alt="image" src="https://github.com/user-attachments/assets/eaa6bb36-9636-4a77-9201-290ae5bf860d" />
+
 
 ## ✨ Features
 
