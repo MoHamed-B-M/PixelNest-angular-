@@ -4,56 +4,122 @@
   <p class="max-w-2xl mx-auto text-lg" [style.color]="'var(--md-sys-color-on-surface-variant)'">Capture Moments, Create Art, Share Your Vision.</p>
 </div>
 
-<!-- GRID -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-4 md:p-8 max-w-7xl mx-auto rounded-[32px]">
-  @for (photo of photos; track photo.id) {
-    <div class="m3-card group rounded-[32px]">
-      <div class="overflow-hidden rounded-[32px] cursor-pointer" (click)="openModal(photo.url)">
-        <img [src]="photo.url" [alt]="photo.title" class="w-full h-56 object-cover transform group-hover:scale-110 transition-transform duration-500 ease-in-out" loading="lazy">
-      </div>
-      <div class="p-4 flex-grow flex flex-col">
-        <div class="flex items-center gap-4 mb-3">
-          <div class="w-12 h-12 rounded-full grid place-items-center text-xl" [style.background]="'linear-gradient(135deg, var(--md-sys-color-primary-container), var(--md-sys-color-secondary-container))'">
-            ✨
-          </div>
-          <div>
-            <h3 class="font-extrabold text-xl font-manrope" [style.color]="'var(--md-sys-color-on-surface)'">{{ photo.title }}</h3>
-            <p class="text-sm" [style.color]="'var(--md-sys-color-on-surface-variant)'">By {{ photo.author }}</p>
-          </div>
+@if (!loading()) {
+  <!-- GRID -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-4 md:p-8 max-w-7xl mx-auto rounded-[32px]">
+    @for (photo of photos(); track photo.id; let i = $index) {
+      <div class="m3-card group rounded-[32px]">
+        <div class="overflow-hidden rounded-[32px] cursor-pointer" (click)="openModal(photo)">
+          <img [ngSrc]="photo.url" [alt]="photo.title" class="w-full h-56 object-cover transform group-hover:scale-110 transition-transform duration-500 ease-in-out" width="1000" height="600" [priority]="i === 0">
         </div>
-        <div class="overflow-hidden transition-all duration-500 ease-in-out" [class.max-h-40]="showDescription() === photo.id" [class.max-h-12]="showDescription() !== photo.id">
-            <p class="text-sm leading-relaxed" [style.color]="'var(--md-sys-color-on-surface-variant)'">{{photo.description}}</p>
-        </div>
-        <button (click)="toggleDescription(photo.id)" class="text-sm font-medium self-start mt-2" [style.color]="'var(--md-sys-color-primary)'">
-          {{ showDescription() === photo.id ? 'Show Less' : 'Show More' }}
-        </button>
-        
-        <div class="mt-auto pt-4 flex justify-between items-center gap-4">
-            <div class="flex flex-wrap gap-2">
-                @for(tag of photo.tags; track tag) {
-                    <span class="px-3 py-1 text-xs rounded-full" [style.background-color]="'var(--md-sys-color-tertiary-container)'" [style.color]="'var(--md-sys-color-on-tertiary-container)'">{{tag}}</span>
-                }
+        <div class="p-4 flex-grow flex flex-col">
+          <div class="flex items-center gap-4 mb-3">
+            <div class="w-12 h-12 rounded-full grid place-items-center text-xl" [style.background]="'linear-gradient(135deg, var(--md-sys-color-primary-container), var(--md-sys-color-secondary-container))'">
+              ✨
             </div>
-            <a [href]="photo.url" [attr.download]="photo.title.replace(' ', '-') + '.jpg'" target="_blank" rel="noopener noreferrer" class="m3-button-download rounded-[20px] shadow-2xl" aria-label="Download photo">
-                <i class="fas fa-download mr-2"></i> Download
-            </a>
+            <div>
+              <h3 class="font-extrabold text-xl font-manrope" [style.color]="'var(--md-sys-color-on-surface)'">{{ photo.title }}</h3>
+              <p class="text-sm" [style.color]="'var(--md-sys-color-on-surface-variant)'">By {{ photo.author }}</p>
+            </div>
+          </div>
+          <div class="overflow-hidden transition-all duration-500 ease-in-out" [class.max-h-40]="showDescription() === photo.id" [class.max-h-12]="showDescription() !== photo.id">
+              <p class="text-sm leading-relaxed" [style.color]="'var(--md-sys-color-on-surface-variant)'">{{photo.description}}</p>
+          </div>
+          <button (click)="toggleDescription(photo.id)" class="text-sm font-medium self-start mt-2" [style.color]="'var(--md-sys-color-primary)'">
+            {{ showDescription() === photo.id ? 'Show Less' : 'Show More' }}
+          </button>
+          
+          <div class="mt-auto pt-4 flex justify-between items-center gap-4">
+              <div class="flex flex-wrap gap-2">
+                  @for(tag of photo.tags; track tag) {
+                      <span class="px-3 py-1 text-xs rounded-full" [style.background-color]="'var(--md-sys-color-tertiary-container)'" [style.color]="'var(--md-sys-color-on-tertiary-container)'">{{tag}}</span>
+                  }
+              </div>
+              <a [href]="photo.url" [attr.download]="photo.title.replace(' ', '-') + '.jpg'" target="_blank" rel="noopener noreferrer" class="m3-button-download rounded-[20px] shadow-2xl" aria-label="Download photo">
+                  <i class="fas fa-download mr-2"></i> Download
+              </a>
+          </div>
         </div>
       </div>
-    </div>
-  }
-</div>
+    }
+  </div>
+} @else {
+  <!-- SKELETON GRID -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-4 md:p-8 max-w-7xl mx-auto">
+    @for (item of skeletonItems; track $index) {
+      <div class="m3-card group rounded-[32px] animate-pulse">
+        <div class="w-full h-56 rounded-[32px]" [style.background-color]="'var(--md-sys-color-surface-container-highest)'"></div>
+        <div class="p-4 flex-grow flex flex-col">
+          <div class="flex items-center gap-4 mb-3">
+            <div class="w-12 h-12 rounded-full" [style.background-color]="'var(--md-sys-color-surface-container-highest)'"></div>
+            <div>
+              <div class="h-6 w-32 rounded" [style.background-color]="'var(--md-sys-color-surface-container-highest)'"></div>
+              <div class="h-4 w-24 rounded mt-2" [style.background-color]="'var(--md-sys-color-surface-container-highest)'"></div>
+            </div>
+          </div>
+          <div class="h-4 w-full rounded mt-2" [style.background-color]="'var(--md-sys-color-surface-container-highest)'"></div>
+          <div class="h-4 w-3/4 rounded mt-1" [style.background-color]="'var(--md-sys-color-surface-container-highest)'"></div>
+          <div class="mt-auto pt-4 flex justify-between items-center gap-4">
+            <div class="flex flex-wrap gap-2">
+              <div class="h-6 w-16 rounded-full" [style.background-color]="'var(--md-sys-color-surface-container-highest)'"></div>
+              <div class="h-6 w-20 rounded-full" [style.background-color]="'var(--md-sys-color-surface-container-highest)'"></div>
+            </div>
+            <div class="h-10 w-32 rounded-full" [style.background-color]="'var(--md-sys-color-surface-container-highest)'"></div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+}
+
 
 <!-- MODAL -->
-@if (isModalVisible()) {
-  <div class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center animate-fade-in" (click)="closeModal()">
-    <div class="relative max-w-4xl max-h-[90vh] p-4" (click)="$event.stopPropagation()">
-      <img [src]="modalImageUrl()" alt="Enlarged view" class="w-full h-full object-contain rounded-[40px] shadow-2xl">
-      <button (click)="closeModal()" class="absolute -top-4 -right-4 w-12 h-12 rounded-full text-2xl grid place-items-center" [style.background-color]="'var(--md-sys-color-primary)'" [style.color]="'var(--md-sys-color-on-primary)'">
+@if (selectedPhoto(); as photo) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4" (click)="closeModal()">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-black/80 backdrop-blur-sm animate-fade-in"></div>
+    
+    <!-- Modal Panel -->
+    <div 
+      class="w-full max-w-5xl max-h-[90vh] grid grid-cols-1 md:grid-cols-2 gap-0 overflow-hidden rounded-[40px] shadow-2xl relative animate-modal-enter" 
+      [style.background-color]="'var(--md-sys-color-surface-container)'"
+      (click)="$event.stopPropagation()">
+      
+      <!-- Image Column -->
+      <div class="relative overflow-hidden h-64 md:h-auto">
+          <img [ngSrc]="photo.url" [alt]="photo.title" class="w-full h-full object-cover" width="1000" height="600">
+      </div>
+      
+      <!-- Details Column -->
+      <div class="p-8 flex flex-col gap-4 overflow-y-auto">
+        <div>
+          <h2 class="text-3xl font-extrabold font-manrope" [style.color]="'var(--md-sys-color-on-surface)'">{{ photo.title }}</h2>
+          <p class="text-md" [style.color]="'var(--md-sys-color-on-surface-variant)'">by {{ photo.author }}</p>
+        </div>
+
+        <p class="text-base leading-relaxed" [style.color]="'var(--md-sys-color-on-surface-variant)'">{{ photo.description }}</p>
+        
+        <div class="flex flex-wrap gap-2">
+          @for(tag of photo.tags; track tag) {
+            <span class="px-3 py-1 text-xs rounded-full" [style.background-color]="'var(--md-sys-color-tertiary-container)'" [style.color]="'var(--md-sys-color-on-tertiary-container)'">{{tag}}</span>
+          }
+        </div>
+
+        <div class="mt-auto pt-4">
+          <a [href]="photo.url" [attr.download]="photo.title.replace(' ', '-') + '.jpg'" target="_blank" rel="noopener noreferrer" class="m3-button-download rounded-[20px] shadow-2xl w-full text-center" aria-label="Download photo">
+              <i class="fas fa-download mr-2"></i> Download
+          </a>
+        </div>
+      </div>
+
+      <button (click)="closeModal()" class="absolute top-4 right-4 w-12 h-12 rounded-full text-2xl grid place-items-center z-10 transition-transform hover:scale-110" [style.background-color]="'var(--md-sys-color-primary)'" [style.color]="'var(--md-sys-color-on-primary)'">
         &times;
       </button>
+
     </div>
   </div>
 }
+
 
 <style>
 .m3-card {
@@ -62,6 +128,7 @@
   box-shadow: 0 8px 24px rgba(0,0,0,0.1);
   border: 1px solid var(--md-sys-color-outline-variant);
   transition:0.5s ease; 
+  will-change: transform, box-shadow;
 }
 .grid{
   @apply rounded-[40px] overflow-hidden flex flex-col transition-all duration-500 ease-in-out transform hover:-translate-y-2;
@@ -105,5 +172,24 @@
 }
 .animate-fade-in {
   animation: fade-in 0.3s ease-out forwards;
+}
+
+@keyframes modal-enter-animation {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  80% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-modal-enter {
+  animation: modal-enter-animation 0.4s ease-out forwards;
 }
 </style>

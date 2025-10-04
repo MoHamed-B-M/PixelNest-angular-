@@ -40,3 +40,30 @@
     background-color: var(--md-sys-color-surface-container-high);
     color: var(--md-sys-color-on-surface);
 }
+
+.m3-icon-button {
+    @apply w-12 h-12 rounded-full grid place-items-center cursor-pointer transition-colors duration-300;
+    color: var(--md-sys-color-on-surface-variant);
+}
+
+.m3-icon-button:hover {
+    background-color: var(--md-sys-color-surface-container-high);
+    color: var(--md-sys-color-on-surface);
+}
+
+.mobile-nav-link {
+    @apply text-3xl font-bold transition-colors duration-300;
+    color: var(--md-sys-color-on-surface-variant);
+}
+
+.mobile-nav-link:hover, .mobile-nav-link.active {
+    color: var(--md-sys-color-primary);
+}
+
+@keyframes fade-in-down {
+  from { opacity: 0; transform: translateY(-1rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-down {
+  animation: fade-in-down 0.3s ease-out forwards;
+}

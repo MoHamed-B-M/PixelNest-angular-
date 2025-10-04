@@ -1,61 +1,95 @@
+
 <!-- HERO -->
 <div class="text-center py-16 px-4">
     <h1 class="text-4xl sm:text-6xl font-extrabold font-manrope mb-2" [style.color]="'var(--md-sys-color-on-background)'">Auralis Library</h1>
     <p class="max-w-2xl mx-auto text-lg" [style.color]="'var(--md-sys-color-on-surface-variant)'">Stay Focused with Calming, Royalty-Free Sounds.</p>
 </div>
 
-<!-- GRID -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-4 md:p-8 max-w-7xl mx-auto rounded-[32px] " >
-  @for (track of tracks; track track.id) {
-    <div class="m3-card group rounded-[30px] ">
-        <div class="overflow-hidden rounded-[32px] relative">
-            <video #videoPlayer [poster]="track.posterUrl" class="w-full h-56 object-cover" muted playsinline [loop]="playerState.get(track.id)?.isLooping">
-                <source [src]="track.videoUrl" type="video/mp4">
-            </video>
-        </div>
+@if (!loading()) {
+  <!-- GRID -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-4 md:p-8 max-w-7xl mx-auto rounded-[32px]" >
+    @for (track of tracks(); track track.id) {
+      <div class="m3-card group rounded-[30px] ">
+          <div class="overflow-hidden rounded-[32px] relative">
+              <video #videoPlayer [poster]="track.posterUrl" class="w-full h-56 object-cover" muted playsinline [loop]="playerState.get(track.id)?.isLooping">
+                  <source [src]="track.videoUrl" type="video/mp4">
+              </video>
+          </div>
 
+          <div class="p-4 flex-grow flex flex-col">
+              <div class="flex items-center gap-4 mb-3">
+                  <div class="w-12 h-12 rounded-full grid place-items-center text-xl" [style.background]="'linear-gradient(135deg, var(--md-sys-color-primary-container), var(--md-sys-color-secondary-container))'">
+                      🎶
+                  </div>
+                  <div>
+                      <h3 class="font-extrabold text-xl font-manrope" [style.color]="'var(--md-sys-color-on-surface)'">{{ track.title }}</h3>
+                      <p class="text-sm" [style.color]="'var(--md-sys-color-on-surface-variant)'">By {{ track.artist }}</p>
+                  </div>
+              </div>
+
+              <div class="overflow-hidden transition-all duration-500 ease-in-out" [class.max-h-40]="showDescription() === track.id" [class.max-h-12]="showDescription() !== track.id">
+                  <p class="text-sm leading-relaxed" [style.color]="'var(--md-sys-color-on-surface-variant)'">{{track.description}}</p>
+              </div>
+              <button (click)="toggleDescription(track.id)" class="text-sm font-medium self-start mt-2" [style.color]="'var(--md-sys-color-primary)'">
+                {{ showDescription() === track.id ? 'Show Less' : 'Show More' }}
+              </button>
+
+              <!-- Audio Player -->
+              <div class="mt-auto pt-4">
+                  <audio #audioPlayer [attr.data-track-id]="track.id" [src]="track.audioUrl" preload="metadata"></audio>
+                  <div class="flex items-center gap-4">
+                      <button (click)="togglePlay(track.id, videoPlayer)" class="w-12 h-12 rounded-full text-xl grid place-items-center flex-shrink-0 transition-transform hover:scale-110" [style.background-color]="'var(--md-sys-color-primary)'" [style.color]="'var(--md-sys-color-on-primary)'">
+                          <i class="fas" [class.fa-play]="!playerState.get(track.id)?.isPlaying" [class.fa-pause]="playerState.get(track.id)?.isPlaying"></i>
+                      </button>
+                      <div class="progress-container" (click)="seek($event, track.id)">
+                          <div class="progress-bar-filled" [style.width.%]="playerState.get(track.id)?.progress"></div>
+                      </div>
+                  </div>
+                  <div class="flex justify-end items-center gap-2 mt-3">
+                      <button class="m3-button-tonal rounded-[20px] " (click)="toggleLoop(track.id)" [class.active]="playerState.get(track.id)?.isLooping">
+                          <i class="fas fa-retweet mr-2 rounded-[20px] "></i> Loop
+                      </button>
+                      <a [href]="track.audioUrl" download class="m3-button-filled-small rounded-[20px] ">
+                          <i class="fas fa-download mr-2 rounded-[20px] "></i> Download
+                      </a>
+                  </div>
+              </div>
+          </div>
+      </div>
+    }
+  </div>
+} @else {
+  <!-- SKELETON GRID -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-4 md:p-8 max-w-7xl mx-auto">
+    @for (item of skeletonItems; track $index) {
+      <div class="m3-card group rounded-[30px] animate-pulse">
+        <div class="w-full h-56 rounded-[32px]" [style.background-color]="'var(--md-sys-color-surface-container-highest)'"></div>
         <div class="p-4 flex-grow flex flex-col">
-            <div class="flex items-center gap-4 mb-3">
-                <div class="w-12 h-12 rounded-full grid place-items-center text-xl" [style.background]="'linear-gradient(135deg, var(--md-sys-color-primary-container), var(--md-sys-color-secondary-container))'">
-                    🎶
-                </div>
-                <div>
-                    <h3 class="font-extrabold text-xl font-manrope" [style.color]="'var(--md-sys-color-on-surface)'">{{ track.title }}</h3>
-                    <p class="text-sm" [style.color]="'var(--md-sys-color-on-surface-variant)'">By {{ track.artist }}</p>
-                </div>
+          <div class="flex items-center gap-4 mb-3">
+            <div class="w-12 h-12 rounded-full" [style.background-color]="'var(--md-sys-color-surface-container-highest)'"></div>
+            <div>
+              <div class="h-6 w-32 rounded" [style.background-color]="'var(--md-sys-color-surface-container-highest)'"></div>
+              <div class="h-4 w-24 rounded mt-2" [style.background-color]="'var(--md-sys-color-surface-container-highest)'"></div>
             </div>
-
-            <div class="overflow-hidden transition-all duration-500 ease-in-out" [class.max-h-40]="showDescription() === track.id" [class.max-h-12]="showDescription() !== track.id">
-                <p class="text-sm leading-relaxed" [style.color]="'var(--md-sys-color-on-surface-variant)'">{{track.description}}</p>
+          </div>
+          <div class="h-4 w-full rounded mt-2" [style.background-color]="'var(--md-sys-color-surface-container-highest)'"></div>
+          <div class="h-4 w-3/4 rounded mt-1" [style.background-color]="'var(--md-sys-color-surface-container-highest)'"></div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 rounded-full" [style.background-color]="'var(--md-sys-color-surface-container-highest)'"></div>
+              <div class="w-full h-4 rounded-full" [style.background-color]="'var(--md-sys-color-surface-container-highest)'"></div>
             </div>
-            <button (click)="toggleDescription(track.id)" class="text-sm font-medium self-start mt-2" [style.color]="'var(--md-sys-color-primary)'">
-              {{ showDescription() === track.id ? 'Show Less' : 'Show More' }}
-            </button>
-
-            <!-- Audio Player -->
-            <div class="mt-auto pt-4">
-                <audio #audioPlayer [attr.data-track-id]="track.id" [src]="track.audioUrl" preload="metadata"></audio>
-                <div class="flex items-center gap-4">
-                    <button (click)="togglePlay(track.id, videoPlayer)" class="w-12 h-12 rounded-full text-xl grid place-items-center flex-shrink-0 transition-transform hover:scale-110" [style.background-color]="'var(--md-sys-color-primary)'" [style.color]="'var(--md-sys-color-on-primary)'">
-                        <i class="fas" [class.fa-play]="!playerState.get(track.id)?.isPlaying" [class.fa-pause]="playerState.get(track.id)?.isPlaying"></i>
-                    </button>
-                    <div class="progress-container" (click)="seek($event, track.id)">
-                        <div class="progress-bar-filled" [style.width.%]="playerState.get(track.id)?.progress"></div>
-                    </div>
-                </div>
-                <div class="flex justify-end items-center gap-2 mt-3">
-                    <button class="m3-button-tonal rounded-[20px] " (click)="toggleLoop(track.id)" [class.active]="playerState.get(track.id)?.isLooping">
-                        <i class="fas fa-retweet mr-2 rounded-[20px] "></i> Loop
-                    </button>
-                    <a [href]="track.audioUrl" download class="m3-button-filled-small rounded-[20px] ">
-                        <i class="fas fa-download mr-2 rounded-[20px] "></i> Download
-                    </a>
-                </div>
+            <div class="flex justify-end items-center gap-2 mt-3">
+              <div class="h-10 w-24 rounded-full" [style.background-color]="'var(--md-sys-color-surface-container-highest)'"></div>
+              <div class="h-10 w-32 rounded-full" [style.background-color]="'var(--md-sys-color-surface-container-highest)'"></div>
             </div>
+          </div>
         </div>
-    </div>
-  }
-</div>
+      </div>
+    }
+  </div>
+}
+
 
 <style>
 .m3-card {
@@ -64,6 +98,7 @@
   box-shadow: 0 8px 24px rgba(0,0,0,0.1);
   border: 1px solid var(--md-sys-color-outline-variant);
    transition:0.5s ease;
+  will-change: transform, box-shadow;
 }
 .m3-card:hover {
   box-shadow: 0 15px 40px rgba(0,0,0,.2);
