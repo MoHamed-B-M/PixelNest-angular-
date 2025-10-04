@@ -1,0 +1,71 @@
+
+<div class="text-center py-20 px-4 sm:px-6 lg:px-8">
+    <h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tight leading-tight font-manrope mb-4" [style.color]="'var(--md-sys-color-on-background)'">
+        Your Expressive <span [style.color]="'var(--md-sys-color-primary)'">Creative Suite</span>
+    </h1>
+    <p class="max-w-3xl mx-auto text-lg sm:text-xl md:text-2xl mb-8" [style.color]="'var(--md-sys-color-on-surface-variant)'">
+        Explore a world of visual art and ambient sound. PixelNest and Auralis bring you high-quality, royalty-free assets in a beautifully designed, dynamically themed interface.
+    </p>
+    <div class="flex justify-center items-center gap-4 sm:gap-6 flex-wrap">
+        <a routerLink="/photography" class="m3-button-filled rounded-[20px]" >
+            <i class="fas fa-camera mr-2 rounded-[20px]"></i> Explore Photos
+        </a>
+        <a routerLink="/music" class="m3-button-outlined rounded-[20px]" >
+            <i class="fas fa-music mr-2 rounded-[20px]" ></i> Listen to Music
+        </a>
+    </div>
+
+    <div class="mt-24 max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="p-6 rounded-[40px]" [style.background-color]="'var(--md-sys-color-surface-container)'">
+            <div class="text-4xl mb-4" [style.color]="'var(--md-sys-color-primary)'"><i class="fas fa-palette"></i></div>
+            <h3 class="text-xl font-bold mb-2" [style.color]="'var(--md-sys-color-on-surface)'">Dynamic Theming</h3>
+            <p [style.color]="'var(--md-sys-color-on-surface-variant)'">Pick a color and watch the entire UI adapt. Powered by Google's Material 3 color utilities for a truly personal experience.</p>
+        </div>
+        <div class="p-6 rounded-[40px]" [style.background-color]="'var(--md-sys-color-surface-container)'">
+            <div class="text-4xl mb-4" [style.color]="'var(--md-sys-color-secondary)'"><i class="fas fa-feather-alt"></i></div>
+            <h3 class="text-xl font-bold mb-2" [style.color]="'var(--md-sys-color-on-surface)'">Expressive Motion</h3>
+            <p [style.color]="'var(--md-sys-color-on-surface-variant)'">Enjoy fluid animations and meaningful transitions that guide you through the experience and make interactions delightful.</p>
+        </div>
+        <div class="p-6 rounded-[40px]" [style.background-color]="'var(--md-sys-color-surface-container)'">
+            <div class="text-4xl mb-4" [style.color]="'var(--md-sys-color-tertiary)'"><i class="fas fa-mobile-alt"></i></div>
+            <h3 class="text-xl font-bold mb-2" [style.color]="'var(--md-sys-color-on-surface)'">Fully Responsive</h3>
+            <p [style.color]="'var(--md-sys-color-on-surface-variant)'">Whether on desktop, tablet, or mobile, the interface provides a seamless and beautiful experience on any screen size.</p>
+        </div>
+    </div>
+</div>
+
+<style>
+.m3-button-filled {
+    @apply inline-flex items-center justify-center px-8 py-4 text-lg font-bold rounded-full transition-all duration-300 ease-in-out shadow-lg hover:shadow-2xl transform hover:-translate-y-1;
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    padding:5px;
+
+}
+.m3-button-filled:active {
+      transform: scaleX(1.1); /* Get bigger from the right and left */
+  transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1); /* Quick transition for the press */
+}
+
+.m3-button-outlined {
+    @apply inline-flex items-center justify-center px-8 py-4 text-lg font-bold rounded-full transition-all duration-300 ease-in-out border-2 transform hover:-translate-y-1 hover:shadow-xl;
+    border-color: var(--md-sys-color-outline);
+    color: var(--md-sys-color-primary);
+      padding:5px;
+    transition:0.3s ease;
+}
+
+.m3-button-outlined:hover {
+    background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    border-color: var(--md-sys-color-primary);
+    transition:0.3s ease-in;
+}
+.m3-button-outlined:active{
+  transform: scaleX(1.1); /* Get bigger from the right and left */
+  transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1); /* Quick transition for the press */
+}
+.fas{
+padding:5px;
+}
+</style>

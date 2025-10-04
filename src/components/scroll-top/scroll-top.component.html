@@ -1,0 +1,9 @@
+@if (isVisible()) {
+  <button 
+    (click)="scrollToTop()" 
+    class="fixed bottom-8 right-8 w-16 h-16 rounded-full text-2xl grid place-items-center z-50 shadow-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl"
+    [style.background-color]="'var(--md-sys-color-primary-container)'" 
+    [style.color]="'var(--md-sys-color-on-primary-container)'">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+}

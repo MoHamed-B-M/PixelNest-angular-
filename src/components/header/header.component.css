@@ -1,0 +1,42 @@
+.nav-link {
+    @apply px-5 py-2 rounded-full text-base font-medium transition-all duration-300 outline-none;
+    color: var(--md-sys-color-on-surface-variant);
+    border: 2px solid transparent;
+    transition: 0.1s ease;
+    padding: 5px;
+    border-radius: 15px;
+    margin: 5px;
+}
+
+.nav-link:hover:not(.active) {
+    color: var(--md-sys-color-on-surface);
+    background-color: var(--md-sys-color-surface-container-highest);
+      box-shadow: 0 15px 40px rgba(0,0,0,.2);
+  transition:0.5s ease; 
+  border-color: var(--md-sys-color-primary);
+}
+
+.nav-link.active {
+    color: var(--md-sys-color-on-primary);
+    background-color: var(--md-sys-color-primary);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transform: scaleX(1.1); /* Get bigger from the right and left */
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); /* Quick transition for the press */
+
+}
+
+.nav-link:focus-visible {
+    border-color: var(--md-sys-color-primary);
+}
+
+.m3-toggle-button {
+    @apply px-4 py-2 rounded-full text-sm font-medium cursor-pointer border transition-colors duration-300 whitespace-nowrap;
+    background-color: transparent;
+    border-color: var(--md-sys-color-outline);
+    color: var(--md-sys-color-on-surface-variant);
+}
+
+.m3-toggle-button:hover {
+    background-color: var(--md-sys-color-surface-container-high);
+    color: var(--md-sys-color-on-surface);
+}

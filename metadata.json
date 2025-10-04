@@ -1,0 +1,5 @@
+{
+  "name": "Creative Suite",
+  "description": "A beautiful and expressive creative suite combining a photography portfolio (PixelNest) and a royalty-free music library (Auralis), built with Angular and featuring dynamic Material 3 theming.",
+  "requestFramePermissions": []
+}

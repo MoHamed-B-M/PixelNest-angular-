@@ -1,0 +1,30 @@
+<header class="sticky top-0 z-50 w-[95%] mx-auto my-2 rounded-[var(--m3-shape-corner-xl)] shadow-2xl transition-colors duration-500" [style.background-color]="'var(--md-sys-color-surface-container-low)'">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+            <a routerLink="/" class="flex items-center gap-3 text-2xl font-bold font-manrope" [style.color]="'var(--md-sys-color-primary)'">
+                <div class="w-12 h-12 rounded-2xl grid place-items-center text-2xl" [style.background]="'linear-gradient(135deg, var(--md-sys-color-primary-container), var(--md-sys-color-tertiary-container))'" [style.color]="'var(--md-sys-color-on-primary-container)'">
+                    🎨
+                </div>
+                Creative Suite
+            </a>
+            <nav class="hidden md:flex items-center p-1 rounded-full" [style.background-color]="'var(--md-sys-color-surface-container-high)'">
+                <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">Home</a>
+                <a routerLink="/photography" routerLinkActive="active" class="nav-link">Photography</a>
+                <a routerLink="/music" routerLinkActive="active" class="nav-link">Music</a>
+                <a routerLink="/feedback" routerLinkActive="active" class="nav-link">Feedback</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <div class="relative">
+                     <input type="color" id="theme-picker" [value]="themeService.sourceColor()" (input)="onColorChange($event)" class="w-10 h-10 p-1 appearance-none bg-transparent border-2 rounded-full cursor-pointer" [style.border-color]="'var(--md-sys-color-outline)'">
+                </div>
+                <button (click)="themeService.toggleTheme()" class="m3-toggle-button">
+                    @if (themeService.isDark()) {
+                        <i class="fas fa-sun mr-2"></i> Light
+                    } @else {
+                        <i class="fas fa-moon mr-2"></i> Dark
+                    }
+                </button>
+            </div>
+        </div>
+    </div>
+</header>

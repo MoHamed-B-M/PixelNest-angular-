@@ -1,0 +1,132 @@
+<!-- HERO -->
+<div class="text-center py-16 px-4">
+    <h1 class="text-4xl sm:text-6xl font-extrabold font-manrope mb-2" [style.color]="'var(--md-sys-color-on-background)'">Auralis Library</h1>
+    <p class="max-w-2xl mx-auto text-lg" [style.color]="'var(--md-sys-color-on-surface-variant)'">Stay Focused with Calming, Royalty-Free Sounds.</p>
+</div>
+
+<!-- GRID -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-4 md:p-8 max-w-7xl mx-auto rounded-[32px] " >
+  @for (track of tracks; track track.id) {
+    <div class="m3-card group rounded-[30px] ">
+        <div class="overflow-hidden rounded-[32px] relative">
+            <video #videoPlayer [poster]="track.posterUrl" class="w-full h-56 object-cover" muted playsinline [loop]="playerState.get(track.id)?.isLooping">
+                <source [src]="track.videoUrl" type="video/mp4">
+            </video>
+        </div>
+
+        <div class="p-4 flex-grow flex flex-col">
+            <div class="flex items-center gap-4 mb-3">
+                <div class="w-12 h-12 rounded-full grid place-items-center text-xl" [style.background]="'linear-gradient(135deg, var(--md-sys-color-primary-container), var(--md-sys-color-secondary-container))'">
+                    🎶
+                </div>
+                <div>
+                    <h3 class="font-extrabold text-xl font-manrope" [style.color]="'var(--md-sys-color-on-surface)'">{{ track.title }}</h3>
+                    <p class="text-sm" [style.color]="'var(--md-sys-color-on-surface-variant)'">By {{ track.artist }}</p>
+                </div>
+            </div>
+
+            <div class="overflow-hidden transition-all duration-500 ease-in-out" [class.max-h-40]="showDescription() === track.id" [class.max-h-12]="showDescription() !== track.id">
+                <p class="text-sm leading-relaxed" [style.color]="'var(--md-sys-color-on-surface-variant)'">{{track.description}}</p>
+            </div>
+            <button (click)="toggleDescription(track.id)" class="text-sm font-medium self-start mt-2" [style.color]="'var(--md-sys-color-primary)'">
+              {{ showDescription() === track.id ? 'Show Less' : 'Show More' }}
+            </button>
+
+            <!-- Audio Player -->
+            <div class="mt-auto pt-4">
+                <audio #audioPlayer [attr.data-track-id]="track.id" [src]="track.audioUrl" preload="metadata"></audio>
+                <div class="flex items-center gap-4">
+                    <button (click)="togglePlay(track.id, videoPlayer)" class="w-12 h-12 rounded-full text-xl grid place-items-center flex-shrink-0 transition-transform hover:scale-110" [style.background-color]="'var(--md-sys-color-primary)'" [style.color]="'var(--md-sys-color-on-primary)'">
+                        <i class="fas" [class.fa-play]="!playerState.get(track.id)?.isPlaying" [class.fa-pause]="playerState.get(track.id)?.isPlaying"></i>
+                    </button>
+                    <div class="progress-container" (click)="seek($event, track.id)">
+                        <div class="progress-bar-filled" [style.width.%]="playerState.get(track.id)?.progress"></div>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-2 mt-3">
+                    <button class="m3-button-tonal rounded-[20px] " (click)="toggleLoop(track.id)" [class.active]="playerState.get(track.id)?.isLooping">
+                        <i class="fas fa-retweet mr-2 rounded-[20px] "></i> Loop
+                    </button>
+                    <a [href]="track.audioUrl" download class="m3-button-filled-small rounded-[20px] ">
+                        <i class="fas fa-download mr-2 rounded-[20px] "></i> Download
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+  }
+</div>
+
+<style>
+.m3-card {
+  @apply rounded-[40px] overflow-hidden flex flex-col transition-all duration-500 ease-in-out transform hover:-translate-y-2;
+  background-color: var(--md-sys-color-surface-container);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  border: 1px solid var(--md-sys-color-outline-variant);
+   transition:0.5s ease;
+}
+.m3-card:hover {
+  box-shadow: 0 15px 40px rgba(0,0,0,.2);
+  border-color: var(--md-sys-color-primary);
+  transition:0.5s ease;
+}
+
+.m3-button-tonal {
+  @apply px-4 py-2 text-sm font-medium rounded-full transition-colors duration-300 flex items-center;
+  color: var(--md-sys-color-on-surface-variant);
+  background-color: transparent;
+  border: 1px solid var(--md-sys-color-outline);
+  padding : 5px; 
+  transition:0.5s ease;
+}
+.m3-button-tonal:hover {
+  background-color: var(--md-sys-color-surface-container-high);
+
+}
+.m3-button-tonal.active {
+    background-color: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+    border-color: transparent;
+        transform: scaleX(1.1); /* Get bigger from the right and left */
+  transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1); /* Quick transition for the press */
+}
+
+.m3-button-filled-small {
+  @apply px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 flex items-center hover:-translate-y-0.5;
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding : 5px; 
+    transition:0.5s ease;
+}
+.m3-button-filled-small:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+
+}
+.m3-button-filled-small:active{
+    transform: scaleX(1.1); /* Get bigger from the right and left */
+  transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1); /* Quick transition for the press */
+}
+
+.fa-download :hover {
+  transform: scaleX(1.1); /* Get bigger from the right and left */
+  transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1); /* Quick transition for the press */
+}
+
+.progress-container {
+  @apply w-full h-4 rounded-full cursor-pointer relative overflow-hidden;
+  background-color: var(--md-sys-color-surface-variant);
+  transition:0.5s ease;
+}
+.progress-bar-filled {
+  @apply absolute h-full;
+  background-color: var(--md-sys-color-primary);
+  -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 10"><path d="M0 5 C 5 0, 5 10, 10 5 S 15 0, 20 5 V 10 H 0 Z" fill="black"/></svg>');
+  mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 10"><path d="M0 5 C 5 0, 5 10, 10 5 S 15 0, 20 5 V 10 H 0 Z" fill="black"/></svg>');
+  -webkit-mask-size: 20px 16px;
+  mask-size: 20px 16px;
+  -webkit-mask-repeat: repeat-x;
+  mask-repeat: repeat-x;
+  transition:0.5s ease;
+}
+</style>

@@ -1,0 +1,58 @@
+<div class="min-h-[80vh] flex items-center justify-center p-4 bg-cover bg-center bg-fixed" style="background-image: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); background-size: 400% 400%; animation: gradientBG 15s ease infinite;">
+  <div class="w-full max-w-lg p-10 space-y-8 rounded-[40px] shadow-2xl glass-card">
+    <div class="text-center">
+        <h1 class="text-3xl font-bold text-white font-manrope">Share Your Feedback</h1>
+        <p class="text-gray-200 mt-2">We'd love to hear your thoughts on the new Creative Suite!</p>
+    </div>
+    
+    <form action="https://formspree.io/f/xgegrvql" method="POST" class="space-y-4">
+        <div>
+            <label for="user_name" class="text-sm font-medium text-gray-100">Full Name</label>
+            <input type="text" name="name" id="user_name" placeholder="John Doe" required class="form-input rounded-[10px]">
+        </div>
+        <div>
+            <label for="user_email" class="text-sm font-medium text-gray-100">Email Address</label>
+            <input type="email" name="_replyto" id="user_email" placeholder="you@example.com" required class="form-input rounded-[10px]">
+        </div>
+        <div>
+            <label for="message" class="text-sm font-medium text-gray-100">Your Feedback</label>
+            <textarea name="message" id="message" rows="4" placeholder="The new design is amazing! I especially love..." required class="form-input"></textarea>
+        </div>
+        <div>
+            <button type="submit" class="w-full font-bold py-3 px-4 rounded-full transition-all duration-400 hover:-translate-y-1 hover:shadow-xl" [style.background-color]="'var(--md-sys-color-primary)'" [style.color]="'var(--md-sys-color-on-primary)'">
+                Send Feedback
+            </button>
+        </div>
+    </form>
+  </div>
+</div>
+
+<style>
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+.text-3xl{
+  padding:5px;
+  margin:5px;
+}
+.glass-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding:15px;
+}
+.form-input {
+    @apply w-full px-4 py-2 mt-2 bg-white bg-opacity-20 border border-transparent rounded-3xl text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-300;
+    focus-ring-color: var(--md-sys-color-primary);
+    padding:5px;
+    margin:5px;
+    transition:0.4s ease ;
+}
+.form-input:focus {
+    --tw-ring-color: var(--focus-ring-color);
+    transition:0.4s ease ;
+}
+</style>
